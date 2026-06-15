@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: hibernate-slow-query-detector
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/slow_query_detector
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        generate_statistics: true
+        session_factory:
+          statement_inspector: com.estudos.slowquerydetector.interceptor.SlowQueryInspector
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
+
+slow-query:
+  enabled: true
+  warning-threshold-millis: 500
+  critical-threshold-millis: 2000
+  persist-records: true
+  max-statement-length: 8000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics
+
+logging:
+  level:
+    com.estudos.slowquerydetector: INFO
+    org.hibernate.SQL: WARN

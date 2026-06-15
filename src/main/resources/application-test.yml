@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:slow_query_detector;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+  flyway:
+    enabled: false
+
+slow-query:
+  enabled: true
+  warning-threshold-millis: 50
+  critical-threshold-millis: 200
+  persist-records: true
+  max-statement-length: 8000
