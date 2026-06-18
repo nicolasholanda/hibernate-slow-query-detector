@@ -1,16 +1,30 @@
 package com.estudos.slowquerydetector.config;
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
 
 import java.math.BigDecimal;
 
+@Validated
 @ConfigurationProperties(prefix = "slow-query")
 public class SlowQueryProperties {
 
     private boolean enabled = true;
+
+    @NotNull
+    @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal warningThresholdMillis = new BigDecimal("500");
+
+    @NotNull
+    @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal criticalThresholdMillis = new BigDecimal("2000");
+
     private boolean persistRecords = true;
+
+    @Min(1)
     private int maxStatementLength = 8000;
 
     public boolean isEnabled() {
