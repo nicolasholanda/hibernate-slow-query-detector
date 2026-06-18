@@ -18,12 +18,16 @@ public final class QueryAnalyzer {
         if (sql == null || sql.isBlank()) {
             return QueryType.OTHER;
         }
-        String head = sql.stripLeading().toUpperCase();
-        if (head.startsWith("SELECT")) return QueryType.SELECT;
-        if (head.startsWith("INSERT")) return QueryType.INSERT;
-        if (head.startsWith("UPDATE")) return QueryType.UPDATE;
-        if (head.startsWith("DELETE")) return QueryType.DELETE;
+        String head = sql.stripLeading();
+        if (startsWithIgnoreCase(head, "SELECT")) return QueryType.SELECT;
+        if (startsWithIgnoreCase(head, "INSERT")) return QueryType.INSERT;
+        if (startsWithIgnoreCase(head, "UPDATE")) return QueryType.UPDATE;
+        if (startsWithIgnoreCase(head, "DELETE")) return QueryType.DELETE;
         return QueryType.OTHER;
+    }
+
+    private static boolean startsWithIgnoreCase(String value, String prefix) {
+        return value.regionMatches(true, 0, prefix, 0, prefix.length());
     }
 
     public static String computeHash(String sql) {
